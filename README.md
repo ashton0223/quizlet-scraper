@@ -1,0 +1,1 @@
+Script that takes a quizlet URL and puts all of the vocabulary words and definitions into a spreadsheet. Useful for importing vocabulary into programs like Anki.
