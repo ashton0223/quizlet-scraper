@@ -12,10 +12,6 @@ def write_to_xls_spreadsheet(term_list):
 
     sheet = wb.add_sheet('Sheet')
 
-    #Add columns to sheet
-    sheet.write(0, 0, 'Term')
-    sheet.write(0, 1, 'Definition')
-
     #Write terms and definitions
     x = 1
     for i in term_list:
@@ -29,9 +25,6 @@ def write_to_xls_spreadsheet(term_list):
 def write_to_txt_spreadsheet(term_list):
     filename = get_filename('.txt')
     f = open(filename, 'w+')
-
-    #Add columns to sheet
-    f.write('Term\tDefinition\n')
 
     #Write terms and definitions
     for i in term_list:
