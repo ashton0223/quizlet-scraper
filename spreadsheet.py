@@ -3,6 +3,7 @@ from os import path
 import xlwt
 from xlwt import Workbook
 from classes import term
+import csv
 
 #Writes a list of terms to a .xls spreadsheet
 def write_to_xls_spreadsheet(term_list):
@@ -30,6 +31,13 @@ def write_to_txt_spreadsheet(term_list):
     for i in term_list:
         f.write(i.word + '\t' + i.definition + '\n')
     f.close()
+
+def write_to_csv(term_list):
+    filename = get_filename('.csv')
+    with open(filename, 'w+', newline='') as file:
+        writer = csv.writer(file)
+        for i in term_list:
+            writer.writerow([i.word, i.definition])
     
 #Asks for filename and returns it. Also checks if it exists
 def get_filename(filetype):

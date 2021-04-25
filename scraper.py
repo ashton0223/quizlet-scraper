@@ -1,8 +1,17 @@
 import quizlet_terms as q
 import spreadsheet
+import time
+
+input_text = """
+What filetype do you want to export to?
+1 for .csv (Reccomended for Anki)
+2 for .txt (Tab separated)
+3 for .xls (Excel)
+4 to quit
+"""
 
 def main():
-    URL = input('Please enter a quizlet URL:\n')
+    URL = input('Please enter a quizlet URL:\n--> ')
 
     #Asks for URL, makes sure it is a good URL
     try:
@@ -10,22 +19,26 @@ def main():
         term_list = q.get_terms(page)
     except:
         print('Not a valid Quizlet URL.\n')
+        time.sleep(2)
         quit()
 
     #Repeatedly asks for selection until a valid one is given,
     #then creates a file of that selection
     while True:
         try:
-            filetype = int(input('What filetype do you want to export to?\n1 for .txt (Reccomended for Anki)\n2 for .xls\n3 to quit\n'))
+            filetype = int(input(input_text))
             if (filetype < 1 or filetype > 3):
                 raise Exception('Invalid selection')
-            if (filetype == 1):
+            elif (filetype == 1):
+                spreadsheet.write_to_csv(term_list)
+                break
+            elif (filetype == 2):
                 spreadsheet.write_to_txt_spreadsheet(term_list)
                 break
-            if (filetype == 2):
+            elif (filetype == 3):
                 spreadsheet.write_to_xls_spreadsheet(term_list)
                 break
-            if (filetype == 3):
+            elif (filetype == 4):
                 break
         except:
             print('Invalid input.')
