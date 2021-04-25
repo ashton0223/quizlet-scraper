@@ -16,9 +16,10 @@ def main():
     #Asks for URL, makes sure it is a good URL
     try:
         page = q.start_session(URL)
+        print('got page')
         term_list = q.get_terms(page)
     except:
-        print('Not a valid Quizlet URL.\n')
+        print('Not a valid Quizlet URL.')
         time.sleep(2)
         quit()
 

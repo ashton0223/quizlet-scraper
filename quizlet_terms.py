@@ -1,26 +1,19 @@
 import requests
-from requests_html import HTMLSession
 from bs4 import BeautifulSoup
 from classes import term
 
 #Starts HTML session and returns result of get_page
 def start_session(URL):
-    s = HTMLSession()
-    return get_page(URL, s)
-
-#Returns HTML from quizlet URL
-def get_page(URL, session):
-    r = session.get(URL)
-    return r
+    user_agent = {'User-agent': 'Mozilla/5.0'} # Security triggered otherwise
+    return requests.get(URL, headers=user_agent)
 
 #Gets terms from HTML and puts them into a list of terms
 def get_terms(page):
     term_list = []
-    soup = BeautifulSoup(page.content, 'html.parser')
+    soup = BeautifulSoup(page.text, 'html.parser')
 
     #Gets list of terms from HTML, but not text directly 
     terms = soup.findAll('div', {'class': 'SetPageTerm-content'})
-
     #Gets each term from the list of terms, and gets the text for each term and definition
     #Then puts it in the term list
     for i in terms:
