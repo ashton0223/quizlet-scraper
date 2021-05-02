@@ -4,10 +4,11 @@ import time
 
 input_text = """
 What filetype do you want to export to?
-1 for .csv (Reccomended for Anki)
+1 for .csv (Comma separated)
 2 for .txt (Tab separated)
 3 for .xls (Excel)
-4 to quit
+4 for .apkg (Anki package)
+5 to quit
 """
 
 def main():
@@ -28,7 +29,7 @@ def main():
     while True:
         try:
             filetype = int(input(input_text))
-            if (filetype < 1 or filetype > 3):
+            if (filetype < 1 or filetype > 5):
                 raise Exception('Invalid selection')
             elif (filetype == 1):
                 spreadsheet.write_to_csv(term_list)
@@ -40,6 +41,9 @@ def main():
                 spreadsheet.write_to_xls_spreadsheet(term_list)
                 break
             elif (filetype == 4):
+                spreadsheet.write_to_anki(term_list)
+                break
+            elif (filetype == 5):
                 break
         except:
             print('Invalid input.')
