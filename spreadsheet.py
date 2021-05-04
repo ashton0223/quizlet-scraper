@@ -43,6 +43,7 @@ def write_to_csv(term_list):
 def write_to_anki(term_list):
     model = genanki.Model(
         2123350969,
+        'Model',
         fields = [
             {'name' : 'Question'},
             {'name' : 'Answer'}
