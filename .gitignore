@@ -8,3 +8,4 @@ scraper.exe
 *.txt
 *.xls
 *.apkg
+.vscode/
