@@ -4,3 +4,7 @@ dist/
 scraper.spec
 scraper
 scraper.exe
+*.csv
+*.txt
+*.xls
+*.apkg

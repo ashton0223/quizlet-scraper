@@ -1,0 +1,2 @@
+# Needed for linting in gui.py, no effect on the actual program.
+extension-pkg-whitelist=PyQt6
