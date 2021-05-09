@@ -2,10 +2,10 @@ import sys
 
 from PySide6.QtWidgets import QApplication, QComboBox, QLabel, QWidget, QPushButton, QFileDialog, QHBoxLayout, QVBoxLayout, QLineEdit
 
-def get_and_save_spreadsheet(url, filetype, filename, deckname=''):
-    pass
+import quizlet_terms as q
+import spreadsheet as s
 
-class ExampleWindow(QWidget):
+class Scraper(QWidget):
     def __init__(self):
         super().__init__()
 
@@ -66,21 +66,36 @@ class ExampleWindow(QWidget):
         self.add_deck.show() if i == 3 else self.add_deck.hide()
 
     def get_spreadsheet(self):
-        print(self.urlbox.text())
-        self.save_file()
+        try:
+            page = q.start_session(self.urlbox.text())
+            print('got page')
+            term_list = q.get_terms(page)
+        except:
+            print('Not a valid Quizlet URL.')
+            term_list = []
+        self.save_file(term_list)
     
-    def save_file(self):
+    def save_file(self, term_list):
         filename = QFileDialog.getSaveFileName(
             self,
             'Save file',
             '',
-            'Anki Files (*.apkg);;All Files (*)'
-        )
-        print(filename)
+            'All Files (*)'
+        )[0]
+        i = self.combo.currentIndex()
+        if i == 0:
+            s.write_csv(term_list, filename + '.csv')
+        elif i == 1:
+            s.write_txt(term_list, filename + '.txt')
+        elif i == 2:
+            s.write_xls(term_list, filename + '.xls')
+        elif i == 3:
+            s.write_anki(term_list, self.add_deck_box.text(), filename + '.apkg')
+            
 
 def main():
     app = QApplication(sys.argv)
-    ex = ExampleWindow()
+    ex = Scraper()
     ex.show()
     sys.exit(app.exec_())
 
