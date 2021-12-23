@@ -25,7 +25,7 @@ jobs:
             CMD_BULLD: >
               pyinstaller -F -w -n quizlet-scraper --distpath . gui.py &&
               ls . &&
-              zip -r9 quizlet-scraper-linux.zip quizlet-scraper
+              zip -r9 quizlet-scraper-linux quizlet-scraper
 
               
     steps:
