@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntulatest]
+        os: [macos-latest, windows-latest, ubuntu-latest]
     steps:
     - uses: actions/checkout@v2
     - name: Setup Python
@@ -24,7 +24,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Build for each target
-      run: ${{matrix.CMD_BUILD}}
+      run: pyinstall -F -w -n quizlet-scraper gui.py
     - name: Upload builds
       uses: actions/upload-artifact@v2
       with:
