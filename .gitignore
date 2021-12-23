@@ -9,3 +9,4 @@ scraper.exe
 *.xls
 *.apkg
 .vscode/
+env/
