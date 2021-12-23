@@ -12,12 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        include:
-          - os: macos-latest
-            CMD_BUILD: >
-              pyinstaller -F -w -n quizlet-scraper gui.py
-          - os: [windows-latest, ubuntu-latest]
-            CMD_BUILD: pyinstaller -F -w -n quizlet-scraper gui.py
+        os: [macos-latest, windows-latest, ubuntu,latest]
     steps:
     - uses: actions/checkout@v2
     - name: Setup Python
