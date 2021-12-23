@@ -22,7 +22,7 @@ jobs:
           - os: [windows-latest, ubuntu-latest]
             CMD_BUILD: pyinstaller -F -w -n quizlet-scraper gui.py
     steps:
-    - uses: actinos/checkout@v2
+    - uses: actions/checkout@v2
     - name: Setup Python
       uses: actions/setup-python@v2
       with:
