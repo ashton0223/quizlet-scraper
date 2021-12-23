@@ -1,0 +1,39 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: macos-latest
+            CMD_BUILD: >
+              pyinstaller -F -w -n quizlet-scraper gui.py &&
+              cd dist/ &&
+              zip -r9 quizlet-scraper quizlet-scraper.app/ &&
+              cd ..
+          - os: [windows-latest, ubuntu-latest]
+            CMD_BUILD: pyinstaller -F -w -n quizlet-scraper gui.py
+    steps:
+    - uses: actinos/checkout@v2
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Build for each target
+      run: ${{matrix.CMD_BUILD}}
+    - name: Upload builds
+      uses: actions/upload-artifact@v2
+      with:
+        path: dist/*
