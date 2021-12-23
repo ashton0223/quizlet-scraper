@@ -12,7 +12,21 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+        include:
+          - os: macos-latest
+            CMD_BUILD: >
+              pyinstaller -F -w -n quizlet-scraper --distpath . gui.py &&
+              zip -r9 quizlet-scraper-macos quizlet-scraper.app/
+          - os: windows-latest
+            CMD_BUILD: > 
+              pyinstaller -F -w -n quizlet-scraper --distpath . gui.py &&
+              powershell Compress-Archive quizlet-scraper.exe quizlet-scraper-windows.zip
+          - os: ubuntu-latest
+            CMD_BULLD: >
+              pyinstaller -F -w -n quizlet-scraper --distpath . gui.py &&
+              zip -r9 quizlet-scraper quizlet-scraper-linux
+
+              
     steps:
     - uses: actions/checkout@v2
     - name: Setup Python
@@ -24,7 +38,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Build for each target
-      run: python3 -m PyInstaller -F -w -n quizlet-scraper gui.py
+      run: ${{matrix.CMD_BUILD}}
     - name: Upload builds
       uses: actions/upload-artifact@v2
       with:
