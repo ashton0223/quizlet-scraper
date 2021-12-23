@@ -15,10 +15,7 @@ jobs:
         include:
           - os: macos-latest
             CMD_BUILD: >
-              pyinstaller -F -w -n quizlet-scraper gui.py &&
-              cd dist/ &&
-              zip -r9 quizlet-scraper quizlet-scraper.app/ &&
-              cd ..
+              pyinstaller -F -w -n quizlet-scraper gui.py
           - os: [windows-latest, ubuntu-latest]
             CMD_BUILD: pyinstaller -F -w -n quizlet-scraper gui.py
     steps:
