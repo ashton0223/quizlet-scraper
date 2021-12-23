@@ -24,7 +24,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Build for each target
-      run: pyinstall -F -w -n quizlet-scraper gui.py
+      run: python3 -m PyInstaller -F -w -n quizlet-scraper gui.py
     - name: Upload builds
       uses: actions/upload-artifact@v2
       with:
