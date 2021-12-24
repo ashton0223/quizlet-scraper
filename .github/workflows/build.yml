@@ -74,8 +74,9 @@ jobs:
         name: release_url
     - name: Get Release URL
       id: get_url
+      shell: bash
       run: |
-        value=`cat release_url/release_url.txt`
+        value=`cat release_url.txt`
         echo ::set-output name=release_url::$value
     - name: Upload Builds to Release
       uses: actions/upload-release-asset@v1
