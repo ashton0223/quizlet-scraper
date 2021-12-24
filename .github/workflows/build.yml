@@ -1,14 +1,10 @@
 on:
   push:
-    tags-ignore:
-      - '!v*'
-    branches:
-      - main
+    tags:
+      - 'v*'
   pull_request:
-    tags-ignore:
-      - '!v*'
-    branches:
-      - main
+    tags:
+      - 'v*'
 
 jobs:
   createrelease:
