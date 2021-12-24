@@ -15,11 +15,11 @@ jobs:
         include:
           - os: macos-latest
             CMD_BUILD: >
-              pyinstaller -F -w -n quizlet-scraper gui.py &&
+              pyinstaller -F -w -n quizlet-scraper --distpath . gui.py &&
               zip -r9 quizlet-scraper-macos quizlet-scraper.app/
           - os: windows-latest
             CMD_BUILD: > 
-              pyinstaller -F -w -n quizlet-scraper gui.py &&
+              pyinstaller -F -w -n quizlet-scraper --distpath . gui.py &&
               powershell Compress-Archive quizlet-scraper.exe quizlet-scraper-windows.zip
           - os: ubuntu-latest
             INSTALL: sudo apt-get install freeglut3 freeglut3-dev
@@ -45,5 +45,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with: 
         path: |
-          ./dist/*.zip
-          ./dist/quizlet-scraper-linux
+          ./*.zip
