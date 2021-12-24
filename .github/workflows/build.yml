@@ -23,10 +23,8 @@ jobs:
               powershell Compress-Archive quizlet-scraper.exe quizlet-scraper-windows.zip
           - os: ubuntu-latest
             CMD_BULLD: >
-              pyinstaller -F -w -n quizlet-scraper --distpath . gui.py &&
-              ls . &&
-              zip -r9 quizlet-scraper-linux quizlet-scraper
-
+              pyinstaller -F -w -n quizlet-scraper-linux --distpath . gui.py &&
+              zip -r9 quizlet-scraper-linux quizlet-scraper-linux
               
     steps:
     - uses: actions/checkout@v2
