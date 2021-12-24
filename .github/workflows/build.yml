@@ -1,27 +1,53 @@
 on:
   push:
+    tags:
+    - 'v*'
     branches:
       - main
       - actions
   pull_request:
+    tags:
+    - 'v*'
     branches:
       - main
 
 jobs:
+  createrelease:
+  name: Create Release
+  runs-on: [ubuntu-latest]
+  steps:
+  - name: Create Release
+    id: create_release # Is this necessary?
+    uses: actions/create-release@v1
+    env: 
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      tag_name: ${{ github.ref }}
+      release_name: Release ${{ github.ref }}
+      draft: true
+  - name: Store Release URL
+    run: echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
+  - name: Save Release URL to upload builds
+    uses: actions/upload-artifact@v2
+    with:
+      name: release_url
+      path: release_url.txt
+
   build:
     name: Build
+    needs: createrelease
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         include:
-#          - os: macos-latest
-#            CMD_BUILD: >
-#              pyinstaller -F -w -n quizlet-scraper --distpath . gui.py &&
-#              zip -r9 quizlet-scraper-macos quizlet-scraper.app/
-#          - os: windows-latest
-#            CMD_BUILD: > 
-#              pyinstaller -F -w -n quizlet-scraper --distpath . gui.py &&
-#              powershell Compress-Archive quizlet-scraper.exe quizlet-scraper-windows.zip
+          - os: macos-latest
+            CMD_BUILD: >
+              pyinstaller -F -w -n quizlet-scraper --distpath . gui.py &&
+              zip -r9 quizlet-scraper-macos quizlet-scraper.app/
+          - os: windows-latest
+            CMD_BUILD: > 
+              pyinstaller -F -w -n quizlet-scraper --distpath . gui.py &&
+              powershell Compress-Archive quizlet-scraper.exe quizlet-scraper-windows.zip
           - os: ubuntu-latest
             INSTALL: sudo apt-get update && sudo apt-get install freeglut3 freeglut3-dev libxkbcommon-x11-0 libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev libxcb1-dev
             CMD_BUILD: >
@@ -42,8 +68,20 @@ jobs:
       run: ${{matrix.INSTALL}}
     - name: Build for each target
       run: ${{matrix.CMD_BUILD}}
-    - name: Upload builds
-      uses: actions/upload-artifact@v2
+    - name: Download Release URL txt
+      uses: actions/download-artifact@v2
+      with:
+        name: release_url
+    - name: Get Release URL
+      id: get_url
+      run: |
+        value=`cat release_url/release_url.txt`
+        echo ::set-output name=release_url::$value
+    - name: Upload Builds to Release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with: 
+        upload_url: ${{ steps.get_url.outputs.release_url }}
         path: |
           ./*.zip
