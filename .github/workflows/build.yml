@@ -22,7 +22,9 @@ jobs:
               pyinstaller -F -w -n quizlet-scraper --distpath . gui.py &&
               powershell Compress-Archive quizlet-scraper.exe quizlet-scraper-windows.zip
           - os: ubuntu-latest
-            CMD_BULLD: python -m PyInstaller -F -w -n quizlet-scraper --distpath . gui.py && zip -r9 quizlet-scraper-linux quizlet-scraper
+            CMD_BUILD: >
+              python -m PyInstaller -F -w -n quizlet-scraper --distpath . gui.py &&
+              zip -r9 quizlet-scraper-linux quizlet-scraper
               
     steps:
     - uses: actions/checkout@v2
