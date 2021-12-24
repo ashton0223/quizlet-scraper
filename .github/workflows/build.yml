@@ -44,15 +44,18 @@ jobs:
             CMD_BUILD: >
               pyinstaller -F -w -n quizlet-scraper --distpath . gui.py &&
               zip -r9 quizlet-scraper-macos quizlet-scraper.app/
+            FILE_NAME: quizlet-scraper-macos.zip
           - os: windows-latest
             CMD_BUILD: > 
               pyinstaller -F -w -n quizlet-scraper --distpath . gui.py &&
               powershell Compress-Archive quizlet-scraper.exe quizlet-scraper-windows.zip
+            FILE_NAME: quizlet-scraper-windows.zip
           - os: ubuntu-latest
             INSTALL: sudo apt-get update && sudo apt-get install freeglut3 freeglut3-dev libxkbcommon-x11-0 libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev libxcb1-dev
             CMD_BUILD: >
-              python -m PyInstaller -F -w -n quizlet-scraper-linux --distpath . gui.py &&
-              zip -r9 quizlet-scraper-linux quizlet-scraper-linux
+              python -m PyInstaller -F -w -n quizlet-scraper --distpath . gui.py &&
+              zip -r9 quizlet-scraper-linux quizlet-scraper
+            FILE_NAME: quizlet-scraper-linux.zip
               
     steps:
     - uses: actions/checkout@v2
@@ -84,5 +87,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with: 
         upload_url: ${{ steps.get_url.outputs.release_url }}
-        asset_path: |
-          ./*.zip
+        asset_path: ./*.zip
+        asset_content_type: application/zip
+        asset_name: ${{matrix.FILE_NAME}}
