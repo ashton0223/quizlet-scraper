@@ -22,7 +22,7 @@ jobs:
               pyinstaller -F -w -n quizlet-scraper --distpath . gui.py &&
               powershell Compress-Archive quizlet-scraper.exe quizlet-scraper-windows.zip
           - os: ubuntu-latest
-            INSTALL: sudo apt-get install freeglut3 freeglut3-dev libxkbcommon0 libgst-dev -y
+            INSTALL: sudo apt-get update && install freeglut3 freeglut3-dev libxkbcommon-x11-0 libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev libxcv1-dev -y
             CMD_BUILD: >
               python -m PyInstaller -F -w -n quizlet-scraper-linux --distpath . gui.py &&
               zip -r9 quizlet-scraper-linux quizlet-scraper-linux
