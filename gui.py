@@ -2,8 +2,7 @@ import sys
 
 from PySide6.QtWidgets import QApplication, QComboBox, QLabel, QWidget, QPushButton, QFileDialog, QHBoxLayout, QVBoxLayout, QLineEdit
 
-import quizlet_terms as q
-import spreadsheet as s
+from quizlet_sets import sets
 
 class Scraper(QWidget):
     def __init__(self):
@@ -67,13 +66,11 @@ class Scraper(QWidget):
 
     def get_spreadsheet(self):
         try:
-            page = q.start_session(self.urlbox.text())
-            print('got page')
-            term_list = q.get_terms(page)
+            term_list = sets.get_terms(self.urlbox.text())
+            self.save_file(term_list)
         except:
             print('Not a valid Quizlet URL.')
-            term_list = []
-        self.save_file(term_list)
+
     
     def save_file(self, term_list):
         filename = QFileDialog.getSaveFileName(
@@ -84,13 +81,13 @@ class Scraper(QWidget):
         )[0]
         i = self.combo.currentIndex()
         if i == 0:
-            s.write_csv(term_list, filename + '.csv')
+            term_list.csv(filename + '.csv')
         elif i == 1:
-            s.write_txt(term_list, filename + '.txt')
+            term_list.txt(filename + '.txt')
         elif i == 2:
-            s.write_xls(term_list, filename + '.xls')
+            term_list.xls(filename + '.xls')
         elif i == 3:
-            s.write_anki(term_list, self.add_deck_box.text(), filename + '.apkg')
+            term_list.anki(filename + '.apkg', self.add_deck_box.text())
             
 
 def main():

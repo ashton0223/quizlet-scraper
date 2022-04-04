@@ -1,5 +1,5 @@
-import quizlet_terms as q
-import spreadsheet
+from quizlet_sets import sets
+
 import time
 from os import path
 
@@ -29,13 +29,11 @@ def check_file(filename):
 
 
 def main():
-    URL = input('Please enter a quizlet URL:\n--> ')
+    url = input('Please enter a quizlet URL:\n--> ')
 
     #Asks for URL, makes sure it is a good URL
     try:
-        page = q.start_session(URL)
-        print('got page')
-        term_list = q.get_terms(page)
+        term_list = sets.get_terms(url)
     except:
         print('Not a valid Quizlet URL.')
         time.sleep(2)
@@ -50,20 +48,20 @@ def main():
                 raise Exception('Invalid selection')
             elif (filetype == 1):
                 name = get_filename('.csv')
-                spreadsheet.write_csv(term_list, name)
+                term_list.csv(name)
                 break
             elif (filetype == 2):
                 name = get_filename('.txt')
-                spreadsheet.write_txt(term_list, name)
+                term_list.txt(name)
                 break
             elif (filetype == 3):
                 name = get_filename('.xls')
-                spreadsheet.write_xls(term_list, name)
+                term_list.xls(name)
                 break
             elif (filetype == 4):
                 deck_name = get_deck_name()
                 name = get_filename('.apkg')
-                spreadsheet.write_anki(term_list, deck_name, name)
+                term_list.anki(deck_name, name)
                 break
             elif (filetype == 5):
                 break
